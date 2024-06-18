@@ -1,0 +1,103 @@
+﻿@using Biblioteka.Model.Entities
+@model Biblioteka.Model.Entities.Book
+
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <label>Authors</label>
+                <div id="authorsList">
+                    @foreach (var author in Model.Authors)
+                    {
+                        <div class="input-group mb-2">
+                            <input asp-for="Authors" required value="@author" class="form-control" />
+                            <div class="input-group-append">
+                                <button class="btn btn-danger remove-author" type="button">Remove</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <span asp-validation-for="Authors" class="text-danger"></span>
+                <button id="addAuthor" class="btn btn-primary" type="button">Add Author</button>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ISBN" class="control-label"></label>
+                <input asp-for="ISBN" class="form-control" />
+                <span asp-validation-for="ISBN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="YearPublished" class="control-label"></label>
+                <input asp-for="YearPublished" class="form-control" />
+                <span asp-validation-for="YearPublished" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control">
+                    <option value="">-- Select Category --</option>
+                    @if (!(ViewBag.Categories==null))
+                    {
+                        @foreach (var category in ViewBag.Categories as List<CategoryBookCountResult>)
+                        {
+                            <option value="@category.CategoryId">
+                                @category.CategoryName (@category.BookCount books)
+                            </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Summary" class="control-label"></label>
+                <input asp-for="Summary" class="form-control" />
+                <span asp-validation-for="Summary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#addAuthor').click(function () {
+                var newInput = '<div class="input-group mb-2">' +
+                    '<input type="text" asp-for="Authors" name="Authors" class="form-control" required />' +
+                    '<div class="input-group-append">' +
+                    '<button class="btn btn-danger remove-author" type="button">Remove</button>' +
+                    '</div></div>';
+                $('#authorsList').append(newInput);
+            });
+
+            $(document).on('click', '.remove-author', function () {
+                $(this).closest('.input-group').remove();
+            });
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

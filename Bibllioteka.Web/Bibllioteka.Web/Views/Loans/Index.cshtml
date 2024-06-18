@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Biblioteka.Model.Entities.Loan>
+
+@{
+    ViewData["Title"] = "Loans";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberId)
+            </th>
+            <th>
+                 @Html.DisplayNameFor(model => model.BookId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoanedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnedAt)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MemberId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoanedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReturnedAt)
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id.Replace("loans/","")">Edit</a> |
+                    <a class="btn btn-danger" asp-action="Remove" asp-route-id="@item.Id.Replace("loans/","")">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

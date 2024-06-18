@@ -1,0 +1,69 @@
+﻿@using Biblioteka.Api.Indices
+@model Biblioteka.Model.Entities.Loan
+
+@{
+    ViewData["Title"] = "Create Loan";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MemberId" class="control-label"></label>
+                <select asp-for="MemberId" class="form-control">
+                    <option value="">-- Select Member --</option>
+                    @if(!(ViewBag.Members==null)){
+                        @foreach (var member in ViewBag.Members as List<Members_WithIdAndName.Result>)
+                        {
+                            <option value="@member.Id">
+                                @member.FirstName @member.LastName
+                            </option>
+                        }
+                    }
+                    
+                </select>
+                <span asp-validation-for="MemberId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BookId" class="control-label"></label>
+                <select asp-for="BookId" class="form-control">
+                    <option value="">-- Select Book --</option>
+                    @if(!(ViewBag.Books==null)){
+                        @foreach (var book in ViewBag.Books as List<Books_WithIdAndTitleAndAuthor.Result>)
+                        {
+                            <option value="@book.Id">
+                                @book.Title (@book.Authors[0])
+                            </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="BookId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoanedAt" class="control-label"></label>
+                <input asp-for="LoanedAt" class="form-control" />
+                <span asp-validation-for="LoanedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReturnedAt" class="control-label"></label>
+                <input asp-for="ReturnedAt" class="form-control" />
+                <span asp-validation-for="ReturnedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
